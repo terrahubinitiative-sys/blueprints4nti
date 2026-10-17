@@ -3,63 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Navakholo TerraHub Initiative</title>
+    <title>Navakholo TerraHub Initiative - Dashboard</title>
     <meta name="google-site-verification" content="KnK7fMRavFEkhzW_yI5F8W7LAt7twSg7p9Aj5OWXHwc" />
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #030303; color: #d4d4d8; font-family: Georgia, 'Times New Roman', Times, serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #030303; color: #d4d4d8; font-family: Georgia, 'Times New Roman', Times, serif; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; user-select: text; }
         .gold-text { color: #d4af37; }
-        .gold-border { border-color: #d4af37; }
-        .card-bg { background-color: #0a0d14; border: 1px solid #131924; }
-        .card-accent { border-left: 3px solid #d4af37; }
-        .sidebar { transform: translateX(-100%); transition: transform 0.3s ease-in-out; }
-        .sidebar.open { transform: translateX(0); }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid rgba(212, 175, 55, 0.2); background: #000000; position: sticky; top: 0; z-index: 50; }
+        .logo-box { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid #d4af37; }
+        .menu-btn { background: #09090b; border: 1px solid #27272a; padding: 8px; border-radius: 4px; color: #d4af37; cursor: pointer; }
+        .search-container { max-width: 600px; width: 100%; margin: 16px auto 0 auto; padding: 0 16px; }
+        .search-input { width: 100%; background: #09090b; border: 1px solid #27272a; font-size: 12px; padding: 10px 12px; color: #ffffff; outline: none; border-radius: 4px; font-family: sans-serif; }
+        .search-input:focus { border-color: #d4af37; }
+        .sidebar { position: fixed; top: 0; left: -320px; width: 300px; height: 100%; background: #09090b; border-right: 1px solid #27272a; z-index: 100; transition: left 0.3s ease; padding: 24px; overflow-y: auto; font-family: sans-serif; }
+        .sidebar.open { left: 0; }
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 90; display: none; }
+        .sidebar-overlay.open { display: block; }
+        main { flex: 1; max-width: 600px; width: 100%; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+        .card { background-color: #0a0d14; border: 1px solid #131924; border-left: 3px solid #d4af37; padding: 20px; border-radius: 2px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        .card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-family: sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .card-category { color: #d4af37; font-weight: bold; }
+        .card-status { color: #52525b; }
+        .card-title { font-size: 18px; font-weight: bold; color: #d4af37; text-transform: uppercase; line-height: 1.3; margin-bottom: 10px; }
+        .card-content { color: #d4d4d8; font-size: 14px; line-height: 1.5; }
+        .card-footer { margin-top: 16px; padding-top: 10px; border-top: 1px solid #18181b; display: flex; justify-content: space-between; align-items: center; font-family: sans-serif; font-size: 10px; color: #71717a; }
+        .copy-btn { background: none; border: none; color: #d4af37; cursor: pointer; font-size: 10px; text-transform: uppercase; }
+        .copy-btn:hover { text-decoration: underline; }
+        footer { border-top: 1px solid #18181b; padding: 24px 0; text-align: center; font-size: 11px; color: #52525b; font-family: sans-serif; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between select-text">
+<body>
 
-    <!-- Header -->
-    <header class="flex items-center justify-between p-4 border-b border-yellow-600/20 bg-black sticky top-0 z-50">
-        <a href="/" class="flex items-center space-x-3">
-            <img src="/nti.jpg" alt="Logo" class="w-10 h-10 rounded-full object-cover border gold-border" onerror="this.src='/storage/emulated/0/Download/nti.gpg'">
+    <header>
+        <a href="/" class="logo-box">
+            <img src="/nti.jpg" alt="Logo" class="logo-img" onerror="this.src='/storage/emulated/0/Download/nti.gpg'">
             <div>
-                <h1 class="font-extrabold text-sm gold-text uppercase leading-tight tracking-wider">NAVAKHOLO TERRAHUB</h1>
-                <p class="text-[9px] text-zinc-400 font-sans italic">Execution Over Excuses &bull; Skills Over Papers</p>
+                <h1 style="font-size: 13px; font-weight: 800; color: #d4af37; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.1;">NAVAKHOLO TERRAHUB</h1>
+                <p style="font-size: 8px; color: #a1a1aa; font-style: italic;">Execution Over Excuses &bull; Skills Over Papers</p>
             </div>
         </a>
-        <button id="menu-btn" class="border border-zinc-800 p-2 rounded bg-zinc-950 gold-text hover:bg-zinc-900 focus:outline-none">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button id="menu-btn" class="menu-btn">
+            <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
         </button>
     </header>
 
-    <!-- Search Overlay Container -->
-    <div class="max-w-xl w-full mx-auto px-4 pt-4">
-        <input type="text" id="search-bar" placeholder="Search matrices & blueprints..." class="w-full bg-zinc-950 border border-zinc-800 text-xs p-3 text-white focus:outline-none focus:border-yellow-600 font-sans rounded">
+    <div class="search-container">
+        <input type="text" id="search-bar" placeholder="Search matrices & blueprints..." class="search-input">
     </div>
 
-    <!-- Sidebar / Navigation -->
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black/80 z-40 hidden"></div>
-    <aside id="sidebar" class="sidebar fixed top-0 left-0 h-full w-80 bg-zinc-950 border-r border-zinc-800 z-50 p-6 overflow-y-auto font-sans">
-        <div class="flex justify-between items-center mb-6 border-b border-zinc-800 pb-4">
-            <h2 class="font-bold text-sm gold-text uppercase tracking-widest">Categories & Topics</h2>
-            <button id="close-menu" class="text-zinc-400 hover:text-white text-xl font-bold">&times;</button>
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+    <aside id="sidebar" class="sidebar">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #27272a; padding-bottom: 12px;">
+            <h2 style="font-size: 13px; font-weight: bold; color: #d4af37; text-transform: uppercase; letter-spacing: 0.05em;">Categories & Topics</h2>
+            <button id="close-menu" style="background:none; border:none; color:#a1a1aa; font-size:20px; cursor:pointer;">&times;</button>
         </div>
-        <ul id="category-list" class="space-y-3 text-sm">
-            <li><a href="#" class="category-filter text-yellow-400 font-semibold block py-1 hover:underline" data-category="all">All Categories</a></li>
+        <ul id="category-list" style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 13px;">
+            <li><a href="#" class="category-filter" data-category="all" style="color: #facc15; font-weight: 600; text-decoration: none;">All Categories</a></li>
         </ul>
     </aside>
 
-    <!-- Main Content -->
-    <main class="flex-1 max-w-xl w-full mx-auto p-4 space-y-4">
-        <div id="posts-container" class="space-y-4">
-            <div class="text-center text-zinc-500 py-12 text-sm font-sans">Loading documentation...</div>
+    <main>
+        <div id="posts-container">
+            <div style="text-align: center; color: #71717a; padding: 40px 0; font-family: sans-serif; font-size: 13px;">Loading documentation...</div>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-zinc-900 py-6 text-center text-xs text-zinc-600 font-sans">
+    <footer>
         <p>&copy; 2026 Navakholo TerraHub Initiative. Open Crawling & Indexing Enabled.</p>
     </footer>
 
@@ -78,7 +90,7 @@
 
         function toggleSidebar() {
             sidebar.classList.toggle('open');
-            sidebarOverlay.classList.toggle('hidden');
+            sidebarOverlay.classList.toggle('open');
         }
 
         menuBtn.addEventListener('click', toggleSidebar);
@@ -97,14 +109,14 @@
                 renderCategories();
                 renderPosts(allPosts);
             } catch (e) {
-                postsContainer.innerHTML = '<p class="text-red-400 text-center text-sm font-sans">Failed to load content. Please check server status.</p>';
+                postsContainer.innerHTML = '<p style="color: #f87171; text-align: center; font-family: sans-serif; font-size: 13px;">Failed to load content. Check server status.</p>';
             }
         }
 
         function renderCategories() {
-            categoryList.innerHTML = '<li><a href="#" class="category-filter text-yellow-400 font-semibold block py-1 hover:underline" data-category="all">All Categories</a></li>';
+            categoryList.innerHTML = '<li><a href="#" class="category-filter" data-category="all" style="color: #facc15; font-weight: 600; text-decoration: none;">All Categories</a></li>';
             allCategories.forEach(cat => {
-                categoryList.innerHTML += `<li><a href="#" class="category-filter text-zinc-300 block py-1 hover:underline" data-category="${cat}">${cat}</a></li>`;
+                categoryList.innerHTML += `<li><a href="#" class="category-filter" data-category="${cat}" style="color: #d4d4d8; text-decoration: none;">${cat}</a></li>`;
             });
 
             document.querySelectorAll('.category-filter').forEach(el => {
@@ -120,22 +132,22 @@
         function renderPosts(posts) {
             const visiblePosts = posts.filter(p => !p.hidden);
             if (visiblePosts.length === 0) {
-                postsContainer.innerHTML = '<div class="card-bg p-6 text-center text-zinc-400 text-sm">No documentation found in this category.</div>';
+                postsContainer.innerHTML = '<div class="card" style="text-align: center; color: #a1a1aa; font-size: 13px;">No documentation found in this category.</div>';
                 return;
             }
 
             postsContainer.innerHTML = visiblePosts.map(p => `
-                <article class="card-bg card-accent p-5 rounded-sm shadow-xl" data-id="${p.id}">
-                    <div class="flex items-center space-x-2 mb-2 font-sans">
-                        <span class="text-[10px] font-bold uppercase tracking-widest gold-text">${p.category}</span>
-                        <span class="text-zinc-600 text-[10px]">&mdash; PUBLISHED</span>
+                <article class="card" data-id="${p.id}">
+                    <div class="card-meta">
+                        <span class="card-category">${p.category}</span>
+                        <span class="card-status">&mdash; PUBLISHED</span>
                     </div>
-                    <h2 class="text-lg md:text-xl font-bold gold-text uppercase tracking-wide leading-snug mb-2.5">${p.title}</h2>
-                    ${p.heading ? `<h3 class="text-sm font-semibold text-yellow-300 mb-2">${p.heading}</h3>` : ''}
-                    <div class="text-zinc-300 leading-normal text-sm md:text-base space-y-2 select-text">${p.parsedContent}</div>
-                    <div class="mt-4 pt-2.5 border-t border-zinc-900/80 flex justify-between items-center text-[10px] text-zinc-500 font-sans">
+                    <h2 class="card-title">${p.title}</h2>
+                    ${p.heading ? `<h3 style="font-size: 13px; font-weight: 600; color: #fde047; margin-bottom: 8px;">${p.heading}</h3>` : ''}
+                    <div class="card-content">${p.parsedContent}</div>
+                    <div class="card-footer">
                         <span>Doc #${p.order} &bull; ${new Date(p.date).toLocaleDateString()}</span>
-                        <button onclick="navigator.clipboard.writeText(window.location.origin + '/dashboard#' + ${p.id}); alert('Link copied to clipboard!');" class="gold-text hover:underline">Copy Link</button>
+                        <button onclick="navigator.clipboard.writeText(window.location.origin + '/dashboard#' + ${p.id}); alert('Link copied to clipboard!');" class="copy-btn">Copy Link</button>
                     </div>
                 </article>
             `).join('');

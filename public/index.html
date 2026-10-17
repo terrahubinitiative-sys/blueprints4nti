@@ -6,66 +6,60 @@
     <title>Navakholo TerraHub Initiative</title>
     <meta name="google-site-verification" content="KnK7fMRavFEkhzW_yI5F8W7LAt7twSg7p9Aj5OWXHwc" />
     <meta name="description" content="Welcome to the official archival repository and knowledge base of the Navakholo TerraHub Initiative." />
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #030303; color: #d4d4d8; font-family: Georgia, 'Times New Roman', Times, serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #030303; color: #d4d4d8; font-family: Georgia, 'Times New Roman', Times, serif; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; padding: 24px; user-select: text; }
         .gold-text { color: #d4af37; }
-        .gold-border { border-color: #d4af37; }
-        .gradient-btn {
-            background: linear-gradient(90deg, #ff4141 0%, #ff8a00 50%, #fbbd18 100%);
-            color: #ffffff;
-            font-weight: 700;
-            box-shadow: 0 4px 20px rgba(255, 65, 65, 0.25);
-        }
+        .gold-border { border: 1px solid #d4af37; }
+        .logo-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 1px solid #d4af37; }
+        .header-container { display: flex; align-items: center; gap: 12px; max-width: 600px; margin: 0 auto; width: 100%; padding-top: 8px; }
+        .header-title { font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #d4af37; line-height: 1.2; }
+        .header-sub { font-size: 9px; color: #a1a1aa; font-family: sans-serif; letter-spacing: 0.02em; margin-top: 2px; }
+        main { display: flex; flex-direction: column; align-items: center; text-align: center; margin: auto; padding: 32px 0; max-width: 550px; width: 100%; }
+        .hero-title { font-size: 24px; font-weight: normal; color: #d4af37; text-transform: uppercase; letter-spacing: 0.03em; line-height: 1.3; margin-bottom: 24px; }
+        .hero-desc { font-size: 14px; color: #a1a1aa; line-height: 1.6; margin-bottom: 32px; text-align: center; }
+        .founder-box { border-top: 1px solid #18181b; width: 100%; padding-top: 20px; margin-bottom: 28px; }
+        .founder-tag { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #d4af37; font-family: sans-serif; font-weight: 700; margin-bottom: 4px; }
+        .founder-name { font-size: 13px; font-style: italic; color: #e4e4e7; }
+        .gradient-btn { background: linear-gradient(90deg, #ff4141 0%, #ff8a00 50%, #fbbd18 100%); color: #ffffff; font-weight: 700; text-decoration: none; display: block; width: 100%; padding: 14px; text-align: center; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 9999px; box-shadow: 0 4px 20px rgba(255, 65, 65, 0.25); }
+        footer { max-width: 600px; margin: 0 auto; width: 100%; border-top: 1px solid #18181b; padding-top: 20px; text-align: center; }
+        .social-links { display: flex; justify-content: center; gap: 20px; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #71717a; font-family: sans-serif; }
+        .social-links a { color: #71717a; text-decoration: none; transition: color 0.2s; }
+        .social-links a:hover { color: #ffffff; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-6 select-text">
+<body>
 
-    <!-- Top Header -->
-    <header class="flex items-center space-x-3 max-w-xl mx-auto w-full pt-2">
-        <img src="/nti.jpg" alt="NTI Logo" class="w-12 h-12 rounded-full object-cover border gold-border" onerror="this.src='/storage/emulated/0/Download/nti.gpg'">
+    <header class="header-container">
+        <img src="/nti.jpg" alt="NTI Logo" class="logo-img" onerror="this.src='/storage/emulated/0/Download/nti.gpg'">
         <div>
-            <h1 class="font-extrabold tracking-wider text-base md:text-lg gold-text uppercase leading-tight">
-                NAVAKHOLO TERRAHUB
-            </h1>
-            <p class="text-[10px] text-zinc-400 font-sans tracking-tight">
-                Execution Over Excuses &bull; Skills Over Papers
-            </p>
+            <h1 class="header-title">NAVAKHOLO TERRAHUB</h1>
+            <p class="header-sub">Execution Over Excuses &bull; Skills Over Papers</p>
         </div>
     </header>
 
-    <!-- Hero Content -->
-    <main class="flex flex-col items-center text-center my-auto py-8 max-w-xl mx-auto">
-        <h2 class="text-2xl md:text-4xl font-normal gold-text uppercase tracking-wide leading-snug mb-8">
-            THE RADICAL ECONOMIC REVOLUTION OF NTI
-        </h2>
-        <p class="text-sm md:text-base text-zinc-400 leading-relaxed mb-10 text-center">
+    <main>
+        <h2 class="hero-title">THE RADICAL ECONOMIC REVOLUTION OF NTI</h2>
+        <p class="hero-desc">
             Welcome to the official archival repository and knowledge base of the Navakholo TerraHub Initiative. Engineered from the ground up to dismantle hardware barriers, empower rural youth through mobile smartphone terminals, and establish a decentralized financial powerhouse across Kenya and beyond.
         </p>
 
-        <div class="border-t border-zinc-900 w-full pt-6 mb-8">
-            <p class="text-[10px] tracking-widest uppercase gold-text font-sans font-semibold mb-1">
-                ARCHITECT & FOUNDER
-            </p>
-            <p class="text-sm italic text-zinc-200">
-                Ezra Wanyama (THE SMARTPHONE SCIENTIST) — NTI-ETL01
-            </p>
+        <div class="founder-box">
+            <p class="founder-tag">ARCHITECT & FOUNDER</p>
+            <p class="founder-name">Ezra Wanyama (THE SMARTPHONE SCIENTIST) &mdash; NTI-ETL01</p>
         </div>
 
-        <div class="w-full">
-            <a href="/dashboard" class="gradient-btn block w-full py-4 text-center text-sm tracking-widest uppercase rounded-full hover:opacity-95 transition">
-                ENTER TO EXPLORE
-            </a>
+        <div style="width: 100%;">
+            <a href="/dashboard" class="gradient-btn">ENTER TO EXPLORE</a>
         </div>
     </main>
 
-    <!-- Footer Links -->
-    <footer class="max-w-xl mx-auto w-full pt-6 pb-2 text-center">
-        <div id="social-links" class="flex justify-center space-x-6 text-xs tracking-widest uppercase text-zinc-500 font-sans">
-            <a href="https://facebook.com" target="_blank" class="hover:text-white">FACEBOOK</a>
-            <a href="https://github.com" target="_blank" class="hover:text-white">GITHUB</a>
-            <a href="https://instagram.com" target="_blank" class="hover:text-white">INSTAGRAM</a>
-            <a href="https://linkedin.com" target="_blank" class="hover:text-white">LINKEDIN</a>
+    <footer>
+        <div id="social-links" class="social-links">
+            <a href="https://facebook.com" target="_blank">FACEBOOK</a>
+            <a href="https://github.com" target="_blank">GITHUB</a>
+            <a href="https://instagram.com" target="_blank">INSTAGRAM</a>
+            <a href="https://linkedin.com" target="_blank">LINKEDIN</a>
         </div>
     </footer>
 
@@ -75,12 +69,11 @@
                 const res = await fetch('/api/settings');
                 const s = await res.json();
                 if (s && s.facebook) {
-                    const links = document.getElementById('social-links');
-                    links.innerHTML = `
-                        <a href="${s.facebook}" target="_blank" class="hover:text-white">FACEBOOK</a>
-                        <a href="${s.github}" target="_blank" class="hover:text-white">GITHUB</a>
-                        <a href="${s.instagram}" target="_blank" class="hover:text-white">INSTAGRAM</a>
-                        <a href="${s.linkedin}" target="_blank" class="hover:text-white">LINKEDIN</a>
+                    document.getElementById('social-links').innerHTML = `
+                        <a href="${s.facebook}" target="_blank">FACEBOOK</a>
+                        <a href="${s.github}" target="_blank">GITHUB</a>
+                        <a href="${s.instagram}" target="_blank">INSTAGRAM</a>
+                        <a href="${s.linkedin}" target="_blank">LINKEDIN</a>
                     `;
                 }
             } catch (e) {}
