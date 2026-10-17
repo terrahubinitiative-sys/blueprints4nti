@@ -186,12 +186,9 @@ app.post('/api/admin/settings', (req, res) => {
     res.json({ success: true });
 });
 
-// Dynamic Sitemap XML Route (Auto-detects matching domain)
+// Explicit Sitemap XML locked to exact property domain
 app.get('/sitemap.xml', (req, res) => {
-    const protocol = req.headers['x-forwarded-proto'] || 'https';
-    const host = req.headers.host;
-    const baseUrl = `${protocol}://${host}`;
-
+    const baseUrl = 'https://blueprints4nti.onrender.com';
     res.header('Content-Type', 'application/xml');
     res.send(`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
