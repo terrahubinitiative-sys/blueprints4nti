@@ -1,0 +1,13 @@
+{
+  "name": "nti-web-portal",
+  "version": "2.1.0",
+  "description": "Navakholo TerraHub Initiative Full SEO Optimized Platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "dotenv": "^16.4.5"
+  }
+}

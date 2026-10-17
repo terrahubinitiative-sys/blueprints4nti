@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navakholo TerraHub Initiative</title>
+    <meta name="google-site-verification" content="KnK7fMRavFEkhzW_yI5F8W7LAt7twSg7p9Aj5OWXHwc" />
+    <meta name="description" content="Welcome to the official archival repository and knowledge base of the Navakholo TerraHub Initiative." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #030303; color: #d4d4d8; font-family: Georgia, 'Times New Roman', Times, serif; }
+        .gold-text { color: #d4af37; }
+        .gold-border { border-color: #d4af37; }
+        .gradient-btn {
+            background: linear-gradient(90deg, #ff4141 0%, #ff8a00 50%, #fbbd18 100%);
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(255, 65, 65, 0.25);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-6 select-text">
+
+    <!-- Top Header -->
+    <header class="flex items-center space-x-3 max-w-xl mx-auto w-full pt-2">
+        <img src="/nti.jpg" alt="NTI Logo" class="w-12 h-12 rounded-full object-cover border gold-border" onerror="this.src='/storage/emulated/0/Download/nti.gpg'">
+        <div>
+            <h1 class="font-extrabold tracking-wider text-base md:text-lg gold-text uppercase leading-tight">
+                NAVAKHOLO TERRAHUB
+            </h1>
+            <p class="text-[10px] text-zinc-400 font-sans tracking-tight">
+                Execution Over Excuses &bull; Skills Over Papers
+            </p>
+        </div>
+    </header>
+
+    <!-- Hero Content -->
+    <main class="flex flex-col items-center text-center my-auto py-8 max-w-xl mx-auto">
+        <h2 class="text-2xl md:text-4xl font-normal gold-text uppercase tracking-wide leading-snug mb-8">
+            THE RADICAL ECONOMIC REVOLUTION OF NTI
+        </h2>
+        <p class="text-sm md:text-base text-zinc-400 leading-relaxed mb-10 text-center">
+            Welcome to the official archival repository and knowledge base of the Navakholo TerraHub Initiative. Engineered from the ground up to dismantle hardware barriers, empower rural youth through mobile smartphone terminals, and establish a decentralized financial powerhouse across Kenya and beyond.
+        </p>
+
+        <div class="border-t border-zinc-900 w-full pt-6 mb-8">
+            <p class="text-[10px] tracking-widest uppercase gold-text font-sans font-semibold mb-1">
+                ARCHITECT & FOUNDER
+            </p>
+            <p class="text-sm italic text-zinc-200">
+                Ezra Wanyama (THE SMARTPHONE SCIENTIST) — NTI-ETL01
+            </p>
+        </div>
+
+        <div class="w-full">
+            <a href="/dashboard" class="gradient-btn block w-full py-4 text-center text-sm tracking-widest uppercase rounded-full hover:opacity-95 transition">
+                ENTER TO EXPLORE
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer Links -->
+    <footer class="max-w-xl mx-auto w-full pt-6 pb-2 text-center">
+        <div id="social-links" class="flex justify-center space-x-6 text-xs tracking-widest uppercase text-zinc-500 font-sans">
+            <a href="https://facebook.com" target="_blank" class="hover:text-white">FACEBOOK</a>
+            <a href="https://github.com" target="_blank" class="hover:text-white">GITHUB</a>
+            <a href="https://instagram.com" target="_blank" class="hover:text-white">INSTAGRAM</a>
+            <a href="https://linkedin.com" target="_blank" class="hover:text-white">LINKEDIN</a>
+        </div>
+    </footer>
+
+    <script>
+        async function loadSocials() {
+            try {
+                const res = await fetch('/api/settings');
+                const s = await res.json();
+                if (s && s.facebook) {
+                    const links = document.getElementById('social-links');
+                    links.innerHTML = `
+                        <a href="${s.facebook}" target="_blank" class="hover:text-white">FACEBOOK</a>
+                        <a href="${s.github}" target="_blank" class="hover:text-white">GITHUB</a>
+                        <a href="${s.instagram}" target="_blank" class="hover:text-white">INSTAGRAM</a>
+                        <a href="${s.linkedin}" target="_blank" class="hover:text-white">LINKEDIN</a>
+                    `;
+                }
+            } catch (e) {}
+        }
+        loadSocials();
+    </script>
+</body>
+</html>

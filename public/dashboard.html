@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navakholo TerraHub Initiative</title>
+    <meta name="google-site-verification" content="KnK7fMRavFEkhzW_yI5F8W7LAt7twSg7p9Aj5OWXHwc" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #030303; color: #d4d4d8; font-family: Georgia, 'Times New Roman', Times, serif; }
+        .gold-text { color: #d4af37; }
+        .gold-border { border-color: #d4af37; }
+        .card-bg { background-color: #0a0d14; border: 1px solid #131924; }
+        .card-accent { border-left: 3px solid #d4af37; }
+        .sidebar { transform: translateX(-100%); transition: transform 0.3s ease-in-out; }
+        .sidebar.open { transform: translateX(0); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between select-text">
+
+    <!-- Header -->
+    <header class="flex items-center justify-between p-4 border-b border-yellow-600/20 bg-black sticky top-0 z-50">
+        <a href="/" class="flex items-center space-x-3">
+            <img src="/nti.jpg" alt="Logo" class="w-10 h-10 rounded-full object-cover border gold-border" onerror="this.src='/storage/emulated/0/Download/nti.gpg'">
+            <div>
+                <h1 class="font-extrabold text-sm gold-text uppercase leading-tight tracking-wider">NAVAKHOLO TERRAHUB</h1>
+                <p class="text-[9px] text-zinc-400 font-sans italic">Execution Over Excuses &bull; Skills Over Papers</p>
+            </div>
+        </a>
+        <button id="menu-btn" class="border border-zinc-800 p-2 rounded bg-zinc-950 gold-text hover:bg-zinc-900 focus:outline-none">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+    </header>
+
+    <!-- Search Overlay Container -->
+    <div class="max-w-xl w-full mx-auto px-4 pt-4">
+        <input type="text" id="search-bar" placeholder="Search matrices & blueprints..." class="w-full bg-zinc-950 border border-zinc-800 text-xs p-3 text-white focus:outline-none focus:border-yellow-600 font-sans rounded">
+    </div>
+
+    <!-- Sidebar / Navigation -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/80 z-40 hidden"></div>
+    <aside id="sidebar" class="sidebar fixed top-0 left-0 h-full w-80 bg-zinc-950 border-r border-zinc-800 z-50 p-6 overflow-y-auto font-sans">
+        <div class="flex justify-between items-center mb-6 border-b border-zinc-800 pb-4">
+            <h2 class="font-bold text-sm gold-text uppercase tracking-widest">Categories & Topics</h2>
+            <button id="close-menu" class="text-zinc-400 hover:text-white text-xl font-bold">&times;</button>
+        </div>
+        <ul id="category-list" class="space-y-3 text-sm">
+            <li><a href="#" class="category-filter text-yellow-400 font-semibold block py-1 hover:underline" data-category="all">All Categories</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-xl w-full mx-auto p-4 space-y-4">
+        <div id="posts-container" class="space-y-4">
+            <div class="text-center text-zinc-500 py-12 text-sm font-sans">Loading documentation...</div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-zinc-900 py-6 text-center text-xs text-zinc-600 font-sans">
+        <p>&copy; 2026 Navakholo TerraHub Initiative. Open Crawling & Indexing Enabled.</p>
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const closeMenu = document.getElementById('close-menu');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        const searchBar = document.getElementById('search-bar');
+        const postsContainer = document.getElementById('posts-container');
+        const categoryList = document.getElementById('category-list');
+
+        let allPosts = [];
+        let allCategories = [];
+        let currentCategory = 'all';
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            sidebarOverlay.classList.toggle('hidden');
+        }
+
+        menuBtn.addEventListener('click', toggleSidebar);
+        closeMenu.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', toggleSidebar);
+
+        async function fetchData() {
+            try {
+                const [postsRes, catRes] = await Promise.all([
+                    fetch('/api/posts'),
+                    fetch('/api/categories')
+                ]);
+                allPosts = await postsRes.json();
+                allCategories = await catRes.json();
+
+                renderCategories();
+                renderPosts(allPosts);
+            } catch (e) {
+                postsContainer.innerHTML = '<p class="text-red-400 text-center text-sm font-sans">Failed to load content. Please check server status.</p>';
+            }
+        }
+
+        function renderCategories() {
+            categoryList.innerHTML = '<li><a href="#" class="category-filter text-yellow-400 font-semibold block py-1 hover:underline" data-category="all">All Categories</a></li>';
+            allCategories.forEach(cat => {
+                categoryList.innerHTML += `<li><a href="#" class="category-filter text-zinc-300 block py-1 hover:underline" data-category="${cat}">${cat}</a></li>`;
+            });
+
+            document.querySelectorAll('.category-filter').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentCategory = el.getAttribute('data-category');
+                    toggleSidebar();
+                    filterAndRender();
+                });
+            });
+        }
+
+        function renderPosts(posts) {
+            const visiblePosts = posts.filter(p => !p.hidden);
+            if (visiblePosts.length === 0) {
+                postsContainer.innerHTML = '<div class="card-bg p-6 text-center text-zinc-400 text-sm">No documentation found in this category.</div>';
+                return;
+            }
+
+            postsContainer.innerHTML = visiblePosts.map(p => `
+                <article class="card-bg card-accent p-5 rounded-sm shadow-xl" data-id="${p.id}">
+                    <div class="flex items-center space-x-2 mb-2 font-sans">
+                        <span class="text-[10px] font-bold uppercase tracking-widest gold-text">${p.category}</span>
+                        <span class="text-zinc-600 text-[10px]">&mdash; PUBLISHED</span>
+                    </div>
+                    <h2 class="text-lg md:text-xl font-bold gold-text uppercase tracking-wide leading-snug mb-2.5">${p.title}</h2>
+                    ${p.heading ? `<h3 class="text-sm font-semibold text-yellow-300 mb-2">${p.heading}</h3>` : ''}
+                    <div class="text-zinc-300 leading-normal text-sm md:text-base space-y-2 select-text">${p.parsedContent}</div>
+                    <div class="mt-4 pt-2.5 border-t border-zinc-900/80 flex justify-between items-center text-[10px] text-zinc-500 font-sans">
+                        <span>Doc #${p.order} &bull; ${new Date(p.date).toLocaleDateString()}</span>
+                        <button onclick="navigator.clipboard.writeText(window.location.origin + '/dashboard#' + ${p.id}); alert('Link copied to clipboard!');" class="gold-text hover:underline">Copy Link</button>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function filterAndRender() {
+            const query = searchBar.value.toLowerCase();
+            let filtered = allPosts;
+
+            if (currentCategory !== 'all') {
+                filtered = filtered.filter(p => p.category === currentCategory);
+            }
+
+            if (query) {
+                filtered = filtered.filter(p => 
+                    p.title.toLowerCase().includes(query) || 
+                    p.heading.toLowerCase().includes(query) || 
+                    p.content.toLowerCase().includes(query) ||
+                    p.category.toLowerCase().includes(query)
+                );
+            }
+
+            renderPosts(filtered);
+        }
+
+        searchBar.addEventListener('input', filterAndRender);
+        fetchData();
+    </script>
+</body>
+</html>

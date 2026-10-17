@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NTI Secure Admin Panel</title>
+    <meta name="google-site-verification" content="KnK7fMRavFEkhzW_yI5F8W7LAt7twSg7p9Aj5OWXHwc" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #000000; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; }
+        .gold-accent { color: #D4AF37; }
+        .gold-border { border-color: #D4AF37; }
+        .gold-bg { background-color: #D4AF37; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-4 md:p-8 select-text">
+
+    <!-- Login Container -->
+    <div id="login-container" class="max-w-md w-full mx-auto my-auto bg-zinc-950 border border-zinc-800 rounded-2xl p-8 shadow-2xl">
+        <div class="text-center mb-6">
+            <img src="/nti.jpg" alt="Logo" class="w-20 h-20 rounded-full object-cover mx-auto mb-4 border-2 gold-border" onerror="this.src='/storage/emulated/0/Download/nti.gpg'">
+            <h1 class="text-xl font-bold gold-accent uppercase tracking-wider">NAVAKHOLO TERRAHUB INITIATIVE</h1>
+            <p class="text-xs text-gray-400 mt-1">Admin Authentication Portal</p>
+        </div>
+        <form id="login-form" class="space-y-4">
+            <div>
+                <label class="block text-xs text-gray-400 mb-1 uppercase font-semibold">Username</label>
+                <input type="text" id="username" required class="w-full bg-zinc-900 border border-zinc-700 rounded-lg p-3 text-white text-sm focus:border-yellow-500 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-xs text-gray-400 mb-1 uppercase font-semibold">Password</label>
+                <input type="password" id="password" required class="w-full bg-zinc-900 border border-zinc-700 rounded-lg p-3 text-white text-sm focus:border-yellow-500 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-xs text-gray-400 mb-1 uppercase font-semibold">Security Quiz: Whose Theorem is featured?</label>
+                <input type="text" id="quiz-answer" required placeholder="Enter answer..." class="w-full bg-zinc-900 border border-zinc-700 rounded-lg p-3 text-white text-sm focus:border-yellow-500 focus:outline-none">
+            </div>
+            <button type="submit" class="w-full gold-bg text-black font-bold py-3 rounded-lg hover:bg-yellow-400 transition mt-2">Access Admin Studio</button>
+            <p id="login-error" class="text-red-400 text-xs text-center hidden mt-2">Invalid credentials or security quiz answer.</p>
+        </form>
+    </div>
+
+    <!-- Admin Dashboard Container -->
+    <div id="admin-dashboard" class="max-w-5xl w-full mx-auto hidden space-y-8">
+        <header class="flex justify-between items-center border-b border-zinc-800 pb-4">
+            <div class="flex items-center space-x-3">
+                <img src="/nti.jpg" alt="Logo" class="w-10 h-10 rounded-full object-cover border gold-border" onerror="this.src='/storage/emulated/0/Download/nti.gpg'">
+                <h1 class="text-lg font-bold gold-accent uppercase">NTI Admin Studio</h1>
+            </div>
+            <button onclick="logout()" class="text-xs text-red-400 border border-red-500/30 px-3 py-1.5 rounded hover:bg-red-500/10 font-semibold">Logout</button>
+        </header>
+
+        <!-- Category Creator -->
+        <section class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 shadow-md">
+            <h2 class="text-lg font-bold text-yellow-400 mb-3">Add Custom Category</h2>
+            <form id="category-form" class="flex gap-3">
+                <input type="text" id="new-category-input" placeholder="e.g. NTI Research Papers" required class="flex-1 bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2.5 text-white text-sm focus:border-yellow-500 focus:outline-none">
+                <button type="submit" class="gold-bg text-black font-bold px-5 py-2.5 rounded-lg text-sm hover:bg-yellow-400 transition">Add Category</button>
+            </form>
+        </section>
+
+        <!-- Create New Post -->
+        <section class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 shadow-md">
+            <h2 class="text-lg font-bold text-yellow-400 mb-4">Create / Post New Document</h2>
+            <form id="post-form" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Select Category</label>
+                        <select id="post-category" required class="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-3 text-white text-sm focus:border-yellow-500 focus:outline-none">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Document Title</label>
+                        <input type="text" id="post-title" required class="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-3 text-white text-sm focus:border-yellow-500 focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Sub-Heading</label>
+                    <input type="text" id="post-heading" required class="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-3 text-white text-sm focus:border-yellow-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Content (Use formatters: ###(Title)###, ##(Sub)##, #(Bold)#, _(Italic)_, 12_font()12_font, blue_color()blue_color)</label>
+                    <textarea id="post-content" rows="6" required class="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-3 text-white text-sm focus:border-yellow-500 focus:outline-none font-mono"></textarea>
+                </div>
+                <button type="submit" class="gold-bg text-black font-bold px-6 py-3 rounded-lg hover:bg-yellow-400 transition text-sm">Publish Document</button>
+            </form>
+        </section>
+
+        <!-- Manage Posts -->
+        <section class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 shadow-md">
+            <h2 class="text-lg font-bold text-yellow-400 mb-4">Manage & Reorder Documents (Tap Doc # to Change Order)</h2>
+            <div id="admin-posts-list" class="space-y-3">
+                <p class="text-gray-500 text-sm">Loading documents...</p>
+            </div>
+        </section>
+
+        <!-- Update Social Links -->
+        <section class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 shadow-md">
+            <h2 class="text-lg font-bold text-yellow-400 mb-4">Update Social Media Networks</h2>
+            <form id="settings-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Facebook URL</label>
+                    <input type="url" id="social-fb" required class="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-3 text-white text-sm focus:border-yellow-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">GitHub URL</label>
+                    <input type="url" id="social-gh" required class="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-3 text-white text-sm focus:border-yellow-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Instagram URL</label>
+                    <input type="url" id="social-ig" required class="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-3 text-white text-sm focus:border-yellow-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">LinkedIn URL</label>
+                    <input type="url" id="social-li" required class="w-full bg-zinc-950 border border-zinc-700 rounded-lg p-3 text-white text-sm focus:border-yellow-500 focus:outline-none">
+                </div>
+                <div class="md:col-span-2">
+                    <button type="submit" class="gold-bg text-black font-bold px-6 py-2.5 rounded-lg text-sm hover:bg-yellow-400 transition">Save Social Links</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <footer class="text-center text-xs text-gray-600 mt-8">
+        <p>&copy; 2026 Navakholo TerraHub Initiative. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const loginContainer = document.getElementById('login-container');
+        const adminDashboard = document.getElementById('admin-dashboard');
+        const loginForm = document.getElementById('login-form');
+        const loginError = document.getElementById('login-error');
+        const postForm = document.getElementById('post-form');
+        const categoryForm = document.getElementById('category-form');
+        const settingsForm = document.getElementById('settings-form');
+        const postCategorySelect = document.getElementById('post-category');
+        const adminPostsList = document.getElementById('admin-posts-list');
+
+        let authToken = localStorage.getItem('nti_auth') || '';
+
+        if (authToken) { checkAuth(); }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const quizAnswer = document.getElementById('quiz-answer').value;
+
+            try {
+                const res = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password, quizAnswer })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    authToken = data.token;
+                    localStorage.setItem('nti_auth', authToken);
+                    showDashboard();
+                } else {
+                    loginError.classList.remove('hidden');
+                }
+            } catch (err) {
+                loginError.classList.remove('hidden');
+            }
+        });
+
+        async function checkAuth() {
+            try {
+                const res = await fetch('/api/admin/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: authToken })
+                });
+                const data = await res.json();
+                if (data.success) { showDashboard(); } else { logout(); }
+            } catch (e) { logout(); }
+        }
+
+        function showDashboard() {
+            loginContainer.classList.add('hidden');
+            adminDashboard.classList.remove('hidden');
+            loadAdminData();
+        }
+
+        function logout() {
+            localStorage.removeItem('nti_auth');
+            location.reload();
+        }
+
+        async function loadAdminData() {
+            try {
+                const [postsRes, catRes, setRes] = await Promise.all([
+                    fetch('/api/posts'),
+                    fetch('/api/categories'),
+                    fetch('/api/settings')
+                ]);
+                const posts = await postsRes.json();
+                const categories = await catRes.json();
+                const settings = await setRes.json();
+
+                postCategorySelect.innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
+
+                if (settings) {
+                    document.getElementById('social-fb').value = settings.facebook || '';
+                    document.getElementById('social-gh').value = settings.github || '';
+                    document.getElementById('social-ig').value = settings.instagram || '';
+                    document.getElementById('social-li').value = settings.linkedin || '';
+                }
+
+                if (posts.length === 0) {
+                    adminPostsList.innerHTML = '<p class="text-gray-500 text-sm">No documents found.</p>';
+                    return;
+                }
+
+                adminPostsList.innerHTML = posts.map(p => `
+                    <div class="bg-zinc-950 border border-zinc-800 rounded-lg p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div class="space-y-1">
+                            <div class="flex items-center space-x-2">
+                                <span onclick="changeOrder(${p.id}, ${p.order})" class="cursor-pointer bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 px-2 py-0.5 rounded text-xs font-bold hover:bg-yellow-500/20" title="Click to change order">Doc #${p.order}</span>
+                                <span class="text-xs uppercase text-gray-400">${p.category}</span>
+                            </div>
+                            <h3 class="font-bold text-white text-base">${p.title}</h3>
+                        </div>
+                        <div class="flex items-center space-x-2 w-full md:w-auto justify-end">
+                            <button onclick="toggleHide(${p.id})" class="text-xs px-3 py-1.5 rounded border ${p.hidden ? 'border-red-500/30 text-red-400' : 'border-green-500/30 text-green-400'}">${p.hidden ? 'Hidden' : 'Public'}</button>
+                            <button onclick="deletePost(${p.id})" class="text-xs px-3 py-1.5 rounded border border-red-500/30 text-red-400 hover:bg-red-500/10">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (e) {
+                adminPostsList.innerHTML = '<p class="text-red-400 text-sm">Failed to load admin documents.</p>';
+            }
+        }
+
+        categoryForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const category = document.getElementById('new-category-input').value;
+            const res = await fetch('/api/admin/categories', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: authToken, category })
+            });
+            const data = await res.json();
+            if (data.success) {
+                document.getElementById('new-category-input').value = '';
+                loadAdminData();
+                alert('Category added successfully!');
+            }
+        });
+
+        postForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const category = postCategorySelect.value;
+            const title = document.getElementById('post-title').value;
+            const heading = document.getElementById('post-heading').value;
+            const content = document.getElementById('post-content').value;
+
+            const res = await fetch('/api/admin/posts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: authToken, category, title, heading, content })
+            });
+            const data = await res.json();
+            if (data.success) {
+                postForm.reset();
+                loadAdminData();
+                alert('Document published successfully!');
+            }
+        });
+
+        settingsForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const facebook = document.getElementById('social-fb').value;
+            const github = document.getElementById('social-gh').value;
+            const instagram = document.getElementById('social-ig').value;
+            const linkedin = document.getElementById('social-li').value;
+
+            const res = await fetch('/api/admin/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: authToken, facebook, github, instagram, linkedin })
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert('Social media links updated successfully!');
+            }
+        });
+
+        async function toggleHide(id) {
+            await fetch(`/api/admin/posts/${id}/hide`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: authToken })
+            });
+            loadAdminData();
+        }
+
+        async function deletePost(id) {
+            if (!confirm('Delete this document?')) return;
+            await fetch(`/api/admin/posts/${id}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: authToken })
+            });
+            loadAdminData();
+        }
+
+        async function changeOrder(id, currentOrder) {
+            const newOrder = prompt('Enter new document order number:', currentOrder);
+            if (newOrder === null) return;
+            const parsed = parseInt(newOrder);
+            if (isNaN(parsed)) return;
+
+            await fetch(`/api/admin/posts/${id}/order`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: authToken, order: parsed })
+            });
+            loadAdminData();
+        }
+    </script>
+</body>
+</html>
