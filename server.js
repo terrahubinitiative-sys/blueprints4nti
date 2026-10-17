@@ -84,7 +84,7 @@ function saveCategories(cat) { fs.writeFileSync(categoriesFile, JSON.stringify(c
 function getSettings() { try { return JSON.parse(fs.readFileSync(settingsFile, 'utf8')); } catch (e) { return {}; } }
 function saveSettings(set) { fs.writeFileSync(settingsFile, JSON.stringify(set, null, 2)); }
 
-// Compact & Clean Custom NTI Text Formatter Parser (Tighter Spacing)
+// Compact Custom NTI Text Formatter Parser
 function parseCustomText(text) {
     if (!text) return '';
     return text
@@ -186,12 +186,25 @@ app.post('/api/admin/settings', (req, res) => {
     res.json({ success: true });
 });
 
+// Dynamic Sitemap XML Route (Auto-detects matching domain)
 app.get('/sitemap.xml', (req, res) => {
+    const protocol = req.headers['x-forwarded-proto'] || 'https';
+    const host = req.headers.host;
+    const baseUrl = `${protocol}://${host}`;
+
     res.header('Content-Type', 'application/xml');
     res.send(`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <url><loc>https://nti-com.onrender.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
-    <url><loc>https://nti-com.onrender.com/dashboard</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+    <url>
+        <loc>${baseUrl}/</loc>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>${baseUrl}/dashboard</loc>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>
 </urlset>`);
 });
 
